@@ -1,6 +1,6 @@
 /*
   Test WoW!
-  Grap some WoW info insecurely via front-end (local test)
+  Grap some WoW info via front-end (insecure local test)
 */
 
 

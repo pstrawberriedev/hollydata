@@ -39,51 +39,59 @@ if(searchCookie != undefined) {
 // UI: 'Recently Searched' hide/show Functionality
 //
 function registerUI(recentArray) {
-  $searchBox.on('focus', function() { 
-    if(recentArray.length > 0) {$recentBox.find('li.filler').hide();}
-    $recentBox.fadeIn();
-    $recentContainer.fadeIn();
-  });
-  $searchBox.on('blur', function() { 
-    $recentBox.fadeOut();
-    $recentContainer.fadeOut();
-  });
   
-  // Capture Searches on Enter key
-  $searchBox.keyup(function (e) {
-    if (e.which === 13) {
+    // Default Test UI (Home)
+    if($searchBox.length) {
+      
+    $searchBox.on('focus', function() { 
+      if(recentArray.length > 0) {$recentBox.find('li.filler').hide();}
+      $recentBox.fadeIn();
+      $recentContainer.fadeIn();
+    });
+    $searchBox.on('blur', function() { 
+      $recentBox.fadeOut();
+      $recentContainer.fadeOut();
+    });
 
-        var searchText = $searchBox.val();
+    // Capture Searches on Enter key
+    $searchBox.keyup(function (e) {
+      if (e.which === 13) {
 
-        // Make sure our array doesn't have more than 5 items
-        // - if it does, delete the oldest one and push in the new item
-        // - if it doesn't, just push in the new item
-        if(recentArray.length >= 5) {
+          var searchText = $searchBox.val();
 
-          var firstItem = recentArray[0];
-          var index = recentArray.indexOf(firstItem);
-          recentArray.splice(index, 1);
+          // Make sure our array doesn't have more than 5 items
+          // - if it does, delete the oldest one and push in the new item
+          // - if it doesn't, just push in the new item
+          if(recentArray.length >= 5) {
 
-          setTimeout(function() {
+            var firstItem = recentArray[0];
+            var index = recentArray.indexOf(firstItem);
+            recentArray.splice(index, 1);
+
+            setTimeout(function() {
+              recentArray.push(searchText);
+
+              setTimeout(function() {
+                Cookies.set('holly-search', { searches: recentArray }, { expires: 365 });
+                arrayToList();
+              },50);
+
+            },100);
+
+          } else {
             recentArray.push(searchText);
-
             setTimeout(function() {
               Cookies.set('holly-search', { searches: recentArray }, { expires: 365 });
               arrayToList();
-            },50);
+            },100);
+          }
 
-          },100);
-
-        } else {
-          recentArray.push(searchText);
-          setTimeout(function() {
-            Cookies.set('holly-search', { searches: recentArray }, { expires: 365 });
-            arrayToList();
-          },100);
-        }
-
-    }
-  });
+      }
+    });
+      
+  } else {
+    console.log('Cookie Test Search UI Disabled');
+  }
   
 }
 

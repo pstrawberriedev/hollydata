@@ -20,11 +20,12 @@ function countCookies() {
         }
      }
   }
-  $('main header[role=banner]').prepend('Cookies: ' + cookieCountNumber + '<br />');
+  $('main header[role=banner]').prepend('<span class="cookie-info">Cookies: ' + cookieCountNumber + '<br /></span>');
 };
 countCookies();
 
-// Do some holly snow!
+
+// Holiday Snow!
 // a Pen by DIACO : twitter.com/Diaco_ml  ||  codepen.io/MAW
 TweenLite.set("#snow",{perspective:600})
 

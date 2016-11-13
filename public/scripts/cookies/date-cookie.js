@@ -22,7 +22,7 @@ if(dateCookie != undefined) {
   var lastVisited = moment(dateCookie.visited, 'MMM Do YYYY hh:mma').fromNow();
   
   // Greet User
-  $('main header[role=banner]').prepend('Your last visit: ' + lastVisited + '<br />');
+  $('main header[role=banner]').prepend('<span class="cookie-info">Your last visit: ' + lastVisited + '<br /></span>');
   
   // Reset Last visited date
   setTimeout(function() {
@@ -38,6 +38,6 @@ if(dateCookie != undefined) {
   console.log('New Date Cookie Created: ' + dateCookie);
   
   // Greet User
-  $('main header[role=banner]').prepend('You haven\'t visited yet. Welcome!<br />');
+  $('main header[role=banner]').prepend('<span class="cookie-info">You haven\'t visited yet. Welcome!<br /></span>');
   
 }

@@ -4,8 +4,8 @@ var router = express.Router();
 // Set up global object
 var global = {
   
-  title:"Scratch",
-  desc: "A node express quickstart"
+  title:"Holly Fun",
+  desc: "A data exploration"
   
 };
 
@@ -15,6 +15,18 @@ router.get('/', function(req, res) {
   
   res.render('home', { 
     page: 'Home',
+    global: global
+  });
+  
+  
+});
+
+/* GET wow */
+router.get('/wow', function(req, res) {
+	
+  
+  res.render('content/wow', { 
+    page: 'WoW',
     global: global
   });
   
