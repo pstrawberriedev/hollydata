@@ -48,16 +48,6 @@ function registerUI(recentArray) {
     $recentBox.fadeOut();
     $recentContainer.fadeOut();
   });
-
-  // Format Array into HTML
-  function arrayToList() {
-    $recentBox.html('');
-    $.each(recentArray, function(i) {
-        var li = $('<li/>')
-            .text(recentArray[i])
-            .appendTo($recentBox);
-    });
-  }
   
   // Capture Searches on Enter key
   $searchBox.keyup(function (e) {
@@ -95,4 +85,14 @@ function registerUI(recentArray) {
     }
   });
   
+}
+
+// Format Array into HTML
+function arrayToList() {
+  $recentBox.html('');
+  $.each(recentArray, function(i) {
+      var li = $('<li/>')
+          .text(recentArray[i])
+          .appendTo($recentBox);
+  });
 }
