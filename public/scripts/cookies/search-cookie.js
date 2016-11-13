@@ -20,6 +20,7 @@ if(searchCookie != undefined) {
   var recentArray = searchCookie.searches;
   if(recentArray.length > 0) { arrayToList(); }
   console.log('Search Cookie exists: ' + recentArray);
+  registerUI(recentArray);
   
 } else {
   
@@ -30,64 +31,68 @@ if(searchCookie != undefined) {
     searchCookie = Cookies.getJSON('holly-search');
     var recentArray = searchCookie.searches;
     console.log('Search Cookie created: ' + recentArray);
+    registerUI(recentArray);
   },50);
     
 }
 
 // UI: 'Recently Searched' hide/show Functionality
 //
-$searchBox.on('focus', function() { 
-  if(recentArray.length > 0) {$recentBox.find('li.filler').hide();}
-  $recentBox.fadeIn();
-  $recentContainer.fadeIn();
-});
-$searchBox.on('blur', function() { 
-  $recentBox.fadeOut();
-  $recentContainer.fadeOut();
-});
-
-// Format Array into HTML
-function arrayToList() {
-  $recentBox.html('');
-  $.each(recentArray, function(i) {
-      var li = $('<li/>')
-          .text(recentArray[i])
-          .appendTo($recentBox);
+function registerUI(recentArray) {
+  $searchBox.on('focus', function() { 
+    if(recentArray.length > 0) {$recentBox.find('li.filler').hide();}
+    $recentBox.fadeIn();
+    $recentContainer.fadeIn();
   });
-}
+  $searchBox.on('blur', function() { 
+    $recentBox.fadeOut();
+    $recentContainer.fadeOut();
+  });
 
-// Capture Searches on Enter key
-$searchBox.keyup(function (e) {
-  if (e.which === 13) {
+  // Format Array into HTML
+  function arrayToList() {
+    $recentBox.html('');
+    $.each(recentArray, function(i) {
+        var li = $('<li/>')
+            .text(recentArray[i])
+            .appendTo($recentBox);
+    });
+  }
+  
+  // Capture Searches on Enter key
+  $searchBox.keyup(function (e) {
+    if (e.which === 13) {
 
-      var searchText = $searchBox.val();
+        var searchText = $searchBox.val();
 
-      // Make sure our array doesn't have more than 5 items
-      // - if it does, delete the oldest one and push in the new item
-      // - if it doesn't, just push in the new item
-      if(recentArray.length >= 5) {
+        // Make sure our array doesn't have more than 5 items
+        // - if it does, delete the oldest one and push in the new item
+        // - if it doesn't, just push in the new item
+        if(recentArray.length >= 5) {
 
-        var firstItem = recentArray[0];
-        var index = recentArray.indexOf(firstItem);
-        recentArray.splice(index, 1);
+          var firstItem = recentArray[0];
+          var index = recentArray.indexOf(firstItem);
+          recentArray.splice(index, 1);
 
-        setTimeout(function() {
+          setTimeout(function() {
+            recentArray.push(searchText);
+
+            setTimeout(function() {
+              Cookies.set('holly-search', { searches: recentArray }, { expires: 365 });
+              arrayToList();
+            },50);
+
+          },100);
+
+        } else {
           recentArray.push(searchText);
-
           setTimeout(function() {
             Cookies.set('holly-search', { searches: recentArray }, { expires: 365 });
             arrayToList();
-          },50);
+          },100);
+        }
 
-        },100);
-
-      } else {
-        recentArray.push(searchText);
-        setTimeout(function() {
-          Cookies.set('holly-search', { searches: recentArray }, { expires: 365 });
-          arrayToList();
-        },100);
-      }
-
-  }
-});
+    }
+  });
+  
+}
