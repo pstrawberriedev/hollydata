@@ -104,6 +104,31 @@
     color:#CC3333;
   }
   
+  // Basic info
+  .hero-basic {
+    display:none;
+    background:rgba(0,0,0,.9);
+    color:@color-light;
+    padding:.6rem;
+    
+    [data-wow] span {
+      font-size:.9rem;
+    }
+    
+    [data-wow=hero-name] {
+      display:block;
+      font-size:1.3rem;
+    }
+    
+    [data-wow=hero-image] {
+      max-width:100%;
+      height:auto;
+      display:block;
+      margin-top:.6rem;
+    }
+    
+  }
+  
 }
 
 // WoW Background

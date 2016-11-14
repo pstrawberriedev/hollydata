@@ -50,11 +50,13 @@ $searchButton.on('click', function() {
       $mainError.fadeOut(180);
       setTimeout(function() {
         $mainError.fadeIn(180);
+        searchable = 1;
       },200);
     } else {
       $mainError.addClass('active');
       $mainError.fadeIn(180);
       $mainError.html('Error: Enter a Character Name and select a Realm');
+      searchable = 1;
     }
     
     
@@ -84,7 +86,7 @@ function getWowFromSearch(info) {
   
   // Callback life
   window.apiCalled = function(data) {
-    console.log('WoW api called');
+    console.log('WoW api queried');
     console.log(data);
   };
   
@@ -103,7 +105,9 @@ function getWowFromSearch(info) {
       $mainError.fadeOut(180);
       $mainError.removeClass('active');
       $mainLoader.fadeOut(180);
-      $mainArea.append(JSON.stringify(data));
+      populateBasicInfo(data);
+      //$mainArea.append(JSON.stringify(data));
+      
       
       setTimeout(function() {
         searchable = 1;
@@ -114,12 +118,72 @@ function getWowFromSearch(info) {
     error: function(xhr, status, error) {
       
       $mainLoader.fadeOut(180);
-      $mainError.html('Error: ' + status + " " + error);
       $mainError.fadeIn(180);
       $mainError.addClass('active');
-
+      searchable = 1;
+      
+      if(xhr.status === 404) { //Character Not Found
+        $mainError.html('Character doesn\'t exist. Make sure you selected a server and try again.');
+      } else {
+        $mainError.html('Dang...something went very wrong...');
+        console.log('xhr: ' + JSON.stringify(xhr));
+        console.log('Status: ' + JSON.stringify(status));
+        console.log('Error: ' + JSON.stringify(error));
+        //$mainError.html('xhr: ' + JSON.stringify(xhr) + '<br />Error: ' + JSON.stringify(status) + '<br />' + JSON.stringify(error));
+      }
+      
     }
   
   });
+  
+  // Populate Page with Basic Info
+  //
+  var $basicArea = $('.wow-container .hero-basic');
+  var $heroName = $('[data-wow="hero-name"]');
+  var $heroPicture = $('[data-wow="hero-image"]');
+  
+  function populateBasicInfo(data) {
+    var cleanRace;
+    var cleanClass;
+    var cleanFaction;
+    
+    // Define Uknown Information (Race, Class, Faction, etc.)
+    switch(data.faction) { //Races
+      case 1: cleanFaction = 'Horde'; break;
+      case 2: cleanFaction = 'Alliance'; break;
+      default: cleanFaction = 'Unknown Faction'; break;
+    }
+    
+    switch(data.race) { //Races
+      case 1: cleanRace = 'Race 1'; break;
+      case 2: cleanRace = 'Race 2'; break;
+      case 3: cleanRace = 'Race 3'; break;
+      case 4: cleanRace = 'Race 4'; break;
+      case 5: cleanRace = 'Race 5'; break;
+      case 6: cleanRace = 'Race 6'; break;
+      case 7: cleanRace = 'Race 7'; break;
+      case 8: cleanRace = 'Race 8'; break;
+      default: cleanRace = 'Unknown Race'; break;
+    }
+    
+    switch(data.class) { //Classes
+      case 1: cleanClass = 'Class 1'; break;
+      case 2: cleanClass = 'Class 2'; break;
+      case 3: cleanClass = 'Class 3'; break;
+      case 4: cleanClass = 'Class 4'; break;
+      case 5: cleanClass = 'Class 5'; break;
+      case 6: cleanClass = 'Class 6'; break;
+      case 7: cleanClass = 'Class 7'; break;
+      case 8: cleanClass = 'Class 8'; break;
+      default: cleanClass = 'Unknown Class'; break;
+    }
+    
+    //Insert Image
+    $heroPicture.attr('src', data.thumbnail);
+    
+    $basicArea.fadeIn(180);
+    $heroName.html(data.name + ' (' + data.realm + ' / ' + cleanFaction + ')' + '<br />' + '<span>Level ' + data.level + ' ' + ' ' + cleanRace + ' ' + cleanClass + '</span>' + '<br />' + '<span>');
+    
+  }
   
 }

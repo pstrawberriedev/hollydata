@@ -21,13 +21,14 @@
             <input id="wow-search" type="search" name="wow-search" placeholder=" Name" />
             <select id="wow-search-realm" name="wow-search-realm">
               <option value="server">Server</option>
+              <option value="area52">Area 52</option>
               <option value="chogall">Chogall</option>
             </select>
           </div>
           
           <!-- Submit -->
           <div class="clearfix">
-            <a id="wow-search-submit" href="##">Find Character</a>
+            <a id="wow-search-submit" href="##">Look up</a>
           </div>
             
         </div>
@@ -40,13 +41,19 @@
   
       
       <div class="row">
-        <div class="col-sm-2 col-sm-push-1 col-xs-12">
-          <div data-wow="hero-name"></div>
-          <img data-wow="hero-image" />
-        </div>
-        <div class="col-sm-8 col-xs-12">
-          ss
-        </div>
+         
+          <div class="col-sm-3 col-sm-push-1 col-xs-12">
+            <div class="hero-basic">
+              <div data-wow="hero-name"></div>
+              <img data-wow="hero-image" />
+            </div>
+          </div>
+          <div class="col-sm-7 col-sm-push-1 col-xs-12">
+            <div class="hero-basic">
+              <div data-wow="hero-info"></div>
+            </div>
+          </div>
+          
       </div>
       
       <div class="row">
