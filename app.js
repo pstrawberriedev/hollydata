@@ -4,7 +4,7 @@
 
 // Require Core
 //~~~~~~~~~~~~~~~~~~~~~~~
-//require('./database');
+require('./config/database');
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -52,6 +52,9 @@ hbs.registerHelper('reverse',
 		return result;
 	}
 );
+hbs.registerHelper('toLowerCase', function(str) {
+  return str.toLowerCase();
+});
 
 // Use some shit!
 //~~~~~~~~~~~~~~~~~~~~~~~

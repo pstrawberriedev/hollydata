@@ -29,16 +29,21 @@ function searchClose() {
 
 // Populate Realms List
 //
+var realmsArray = [];
 function populateRealms() {
   //console.log(globalRealms.realms);
   for(var i in globalRealms.realms){
-    $realmSearch.append('<option value="' + globalRealms.realms[i].slug + '">' + globalRealms.realms[i].name + '</option>');
+    realmsArray.push({label: globalRealms.realms[i].name, value: globalRealms.realms[i].slug});
+    //$realmSearch.append('<option value="' + globalRealms.realms[i].slug + '">' + globalRealms.realms[i].name + '</option>');
     //console.log(globalRealms.realms[i].name); //names
     //console.log(globalRealms.realms[i].slug); //slugs
+    
   }
 };
 $(document).ready(function() {
   populateRealms();
+  var autoCompleteInput = document.getElementById("wow-search-realm");
+  new Awesomplete(autoCompleteInput, { minChars: 1, list: realmsArray });
 });
 
 // Get Search

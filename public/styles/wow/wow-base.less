@@ -7,7 +7,7 @@
   display:block;
   width:100%;
   
-    input[type=search] {
+    input[type=search] { // Name
       display:block;
       position:relative;
       .box-sizing(border-box);
@@ -32,15 +32,23 @@
       }
     }
   
-    select {
+    .awesomplete { // Search Autocomplete Plugin Wrapper
       display:block;
       position:relative;
       float:left;
+      .box-sizing(border-box);
       margin:0;
-      border:0;
       padding:0;
       margin-left:1%;
       width:25%;
+      height:80px;
+    }
+    input[type=text] { // Realm
+      width:100%;
+      border:0;
+      margin:0;
+      padding:0;
+      padding-left:10px;
       height:80px;
       font-size:1.5rem;
       color:@color-dark;

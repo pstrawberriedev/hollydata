@@ -24,7 +24,7 @@
 
   </head>
   
-  <body>
+  <body class="{{#if page}}page-{{toLowerCase page}}{{/if}}">
     
     <!-- Navigation -->
     <a id="mobile-menu" href="##">
@@ -38,14 +38,11 @@
     <ul id="nav-mobile-menu" role="menubar" aria-hidden="true">
        
         <!-- Nav Master Links -->
+        <li role="menu">
+          <a href="/">Cookie Tests</a>
+        </li>
         <li aria-haspopup="true" role="menu" data-mobile-opens="a">
-          <a href="##" aria-expanded="false">Submenu</a>
-        </li>
-        <li role="menu">
-          <a href="##">Filler</a>
-        </li>
-        <li role="menu">
-          <a href="##">Filler</a>
+          <a href="##" aria-expanded="false">API Tests</a>
         </li>
 
         <!-- Nav Submenus -->
@@ -58,13 +55,7 @@
             </a>
           </li>
           <li>
-            <a href="##">Link</a>
-          </li>
-          <li>
-            <a href="##">Link</a>
-          </li>
-          <li>
-            <a href="##">Link</a>
+            <a href="/wow">WoW</a>
           </li>
         </ul>
         
