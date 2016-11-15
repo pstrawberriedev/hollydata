@@ -9,6 +9,7 @@ console.warn('[test-wow.js - Careful, API Key is exposed!]');
 
 // Define WoW UI vars
 //
+var $mainSearch = $('.wow-search');
 var $mainLoader = $('.wow-loader.main');
 var $mainArea = $('.wow-container');
 var $mainError = $('.wow-error.main');
@@ -16,6 +17,15 @@ var $mainError = $('.wow-error.main');
 var $heroSearch = $('#wow-search');
 var $realmSearch = $('#wow-search-realm');
 var $searchButton = $('#wow-search-submit');
+
+// Shrink/Expand Search Area
+//
+function searchOpen() {
+  TweenLite.to($mainSearch, .35, { autoAlpha: 1, zIndex:800, ease: Power1.easeInOut });
+}
+function searchClose() {
+  
+}
 
 // Populate Realms List
 //
@@ -30,11 +40,6 @@ function populateRealms() {
 $(document).ready(function() {
   populateRealms();
 });
-
-// Populate Items
-//
-// http://us.media.blizzard.com/wow/icons/56/[ITEM NAME HERE].jpg
-
 
 // Get Search
 //
@@ -223,9 +228,31 @@ function getWowFromSearch(info) {
     $heroPicture.attr('src', completedImage);
     
     $basicArea.fadeIn(180);
-    $heroName.html(data.name + ' (' + data.realm + ' / ' + cleanFaction + ')' + '<br />' + '<span>Level ' + data.level + ' ' + ' ' + cleanRace + ' ' + cleanClass + '</span>' + '<br />' + '<span>');
+    $heroName.html(data.name + ' <br /><span>(' + data.realm + ' / ' + cleanFaction + ')</span>' + '<br />' + '<span>Level ' + data.level + ' ' + ' ' + cleanRace + ' ' + cleanClass + '</span>' + '<br />' + '<span>');
     
     //Insert Character Items
+    // http://us.media.blizzard.com/wow/icons/36/[ITEM NAME HERE].jpg
+    var $itemsContainer = $('.item-info');
+    var $itemLevel = $('[data-wow="item-level"]');
+    
+    // Loop Items
+    var heroItems = data.items
+    var itemBaseUrl = 'http://us.media.blizzard.com/wow/icons/36/';
+    
+    $.each(heroItems, function(key, value) {
+      var slot = key;
+      var icon = value.icon ? value.icon : value;
+      var name = value.name;
+      
+      if(name != undefined) { //populate images, skip item levels
+        $('[data-slot="' + slot + '"]').html('<img src="' + itemBaseUrl + icon + '.jpg" />');
+      }
+      
+      if(slot === 'averageItemLevelEquipped') {
+        $itemLevel.html('Item Level <span>' + value + '</span>');
+      }
+      
+    });
     
   }
   
