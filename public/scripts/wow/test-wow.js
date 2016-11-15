@@ -17,6 +17,25 @@ var $heroSearch = $('#wow-search');
 var $realmSearch = $('#wow-search-realm');
 var $searchButton = $('#wow-search-submit');
 
+// Populate Realms List
+//
+function populateRealms() {
+  //console.log(globalRealms.realms);
+  for(var i in globalRealms.realms){
+    $realmSearch.append('<option value="' + globalRealms.realms[i].slug + '">' + globalRealms.realms[i].name + '</option>');
+    //console.log(globalRealms.realms[i].name); //names
+    //console.log(globalRealms.realms[i].slug); //slugs
+  }
+};
+$(document).ready(function() {
+  populateRealms();
+});
+
+// Populate Items
+//
+// http://us.media.blizzard.com/wow/icons/56/[ITEM NAME HERE].jpg
+
+
 // Get Search
 //
 var searchable = 1;
@@ -35,6 +54,7 @@ $searchButton.on('click', function() {
     characterSearched = $heroSearch.val().replace(/ /g,'').toLowerCase();
     realmSearched = $realmSearch.val();
     
+    console.log('--------------------------');
     console.log('Searching Character: ' + characterSearched);
     console.log('On Realm: ' + realmSearched);
     
@@ -66,11 +86,11 @@ $searchButton.on('click', function() {
 
 // Build URL
 //
-//https://us.api.battle.net/wow/character/chogall/milkme
+//https://us.api.battle.net/wow/character/chogall/milkme?locale=en_US&apikey=
 function buildUrl(calltype, server, name) {
   
   var baseUrl = 'https://us.api.battle.net/wow/';
-  var secretUrl = '?locale=en_US&jsonp=apiCalled&apikey=cp9c5gugfpezfeewpmj26bme5cehdvx4';
+  var secretUrl = '?fields=items&locale=en_US&jsonp=apiCalled&apikey=cp9c5gugfpezfeewpmj26bme5cehdvx4';
   var finishedUrl = baseUrl + calltype + '/' + server + '/' + name + secretUrl;
   
   if(finishedUrl) {
@@ -81,12 +101,13 @@ function buildUrl(calltype, server, name) {
 }
 
 // WoW ajax call
+// - Grab Character Basic Info + Character Items
 //
 function getWowFromSearch(info) {
   
   // Callback life
   window.apiCalled = function(data) {
-    console.log('WoW api queried');
+    console.log('WoW API Queried...');
     console.log(data);
   };
   
@@ -154,35 +175,57 @@ function getWowFromSearch(info) {
       default: cleanFaction = 'Unknown Faction'; break;
     }
     
-    switch(data.race) { //Races
-      case 1: cleanRace = 'Race 1'; break;
-      case 2: cleanRace = 'Race 2'; break;
-      case 3: cleanRace = 'Race 3'; break;
-      case 4: cleanRace = 'Race 4'; break;
-      case 5: cleanRace = 'Race 5'; break;
-      case 6: cleanRace = 'Race 6'; break;
-      case 7: cleanRace = 'Race 7'; break;
-      case 8: cleanRace = 'Race 8'; break;
+    // Races
+    // https://us.api.battle.net/wow/data/character/races?locale=en_US&apikey=
+    switch(data.race) {
+      case 1: cleanRace = 'Human'; break;
+      case 2: cleanRace = 'Orc'; break;
+      case 3: cleanRace = 'Dwarf'; break;
+      case 4: cleanRace = 'Night Elf'; break;
+      case 5: cleanRace = 'Undead'; break;
+      case 6: cleanRace = 'Tauren'; break;
+      case 7: cleanRace = 'Gnome'; break;
+      case 8: cleanRace = 'Troll'; break;
+      case 9: cleanRace = 'Goblin'; break;
+      case 10: cleanRace = 'Blood Elf'; break;
+      case 11: cleanRace = 'Draenei'; break;
+      case 22: cleanRace = 'Worgen'; break;
+      case 24: cleanRace = 'Pandaren'; break;
+      case 25: cleanRace = 'Pandaren'; break;
+      case 26: cleanRace = 'Pandaren'; break;
       default: cleanRace = 'Unknown Race'; break;
     }
     
-    switch(data.class) { //Classes
-      case 1: cleanClass = 'Class 1'; break;
-      case 2: cleanClass = 'Class 2'; break;
-      case 3: cleanClass = 'Class 3'; break;
-      case 4: cleanClass = 'Class 4'; break;
-      case 5: cleanClass = 'Class 5'; break;
-      case 6: cleanClass = 'Class 6'; break;
-      case 7: cleanClass = 'Class 7'; break;
-      case 8: cleanClass = 'Class 8'; break;
+    // Classes
+    // https://us.api.battle.net/wow/data/character/classes?locale=en_US&apikey=
+    switch(data.class) {
+      case 1: cleanClass = 'Warrior'; break;
+      case 2: cleanClass = 'Paladin'; break;
+      case 3: cleanClass = 'Hunter'; break;
+      case 4: cleanClass = 'Rogue'; break;
+      case 5: cleanClass = 'Priest'; break;
+      case 6: cleanClass = 'Death Knight'; break;
+      case 7: cleanClass = 'Shaman'; break;
+      case 8: cleanClass = 'Mage'; break;
+      case 9: cleanClass = 'Warlock'; break;
+      case 10: cleanClass = 'Monk'; break;
+      case 11: cleanClass = 'Druid'; break;
+      case 12: cleanClass = 'Demon Hunter'; break;
       default: cleanClass = 'Unknown Class'; break;
     }
     
-    //Insert Image
-    $heroPicture.attr('src', data.thumbnail);
+    //Insert Character Image
+    var crudeImage = data.thumbnail;
+    var baseImageUrl = 'http://render-api-us.worldofwarcraft.com/static-render/us/';
+    var fullImageVariant = crudeImage.replace('-avatar.jpg', '-profilemain.jpg');
+    var completedImage = baseImageUrl + fullImageVariant;
+    $heroPicture.addClass(cleanFaction.toLowerCase());
+    $heroPicture.attr('src', completedImage);
     
     $basicArea.fadeIn(180);
     $heroName.html(data.name + ' (' + data.realm + ' / ' + cleanFaction + ')' + '<br />' + '<span>Level ' + data.level + ' ' + ' ' + cleanRace + ' ' + cleanClass + '</span>' + '<br />' + '<span>');
+    
+    //Insert Character Items
     
   }
   

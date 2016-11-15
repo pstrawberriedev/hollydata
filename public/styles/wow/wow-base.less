@@ -121,10 +121,13 @@
     }
     
     [data-wow=hero-image] {
-      max-width:100%;
       height:auto;
       display:block;
-      margin-top:.6rem;
+      float:left;
+      margin:0 .6rem .6rem 0;
+      max-width: 100px;
+        &.horde {border-bottom: 3px solid #aa3333;}
+        &.alliance {border-bottom: 3px solid #3333aa;}
     }
     
   }
@@ -143,7 +146,7 @@
   z-index:-2;
   overflow:hidden;
   background-color:#242424;
-  background:transparent url('../images/wowbg.jpg') no-repeat center center;
+  background:transparent url('../images/wow/wowbg.jpg') no-repeat center center;
   .background-size(cover);
 }
 
